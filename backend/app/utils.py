@@ -45,8 +45,12 @@ def generate_bill_pdf(path, bill_data):
 
     # ── Styles ───────────────────────────────────────────────────────────────
     brand_style = ParagraphStyle(
-        name="Brand", fontSize=30, textColor=WHITE,
-        fontName="Helvetica-Bold", alignment=1,
+        name="Brand", fontSize=26, textColor=WHITE,
+        fontName="Helvetica-Bold", alignment=1, leading=30,
+    )
+    descriptor_style = ParagraphStyle(
+        name="Descriptor", fontSize=9, textColor=colors.HexColor("#D0E1FD"),
+        fontName="Helvetica", alignment=1, spaceBefore=2,
     )
     bill_title_style = ParagraphStyle(
         name="BillTitle", fontSize=13, textColor=NAVY,
@@ -61,9 +65,10 @@ def generate_bill_pdf(path, bill_data):
     # HEADER BANNER — fixed height so text is never clipped
     # ════════════════════════════════════════════════════════════════════════
     banner = Table(
-        [[Paragraph("<b>BIZmate</b>", brand_style)]],
+        [[Paragraph("<b>profit.exe</b>", brand_style)],
+         [Paragraph("AI-Powered Business Intelligence for Small Merchants", descriptor_style)]],
         colWidths=[PAGE_W],
-        rowHeights=[24 * mm],   # ✅ explicit height — prevents clipping
+        rowHeights=[14 * mm, 8 * mm],
     )
     banner.setStyle(TableStyle([
         ('BACKGROUND',    (0, 0), (-1, -1), NAVY),
@@ -219,11 +224,11 @@ def generate_bill_pdf(path, bill_data):
     # ════════════════════════════════════════════════════════════════════════
     elements.append(KeepTogether([
         HRFlowable(width="100%", thickness=1, color=colors.HexColor("#D1D5DB"), spaceAfter=6),
-        Paragraph("<b>Thank you for shopping with BIZmate!</b>", footer_bold),
+        Paragraph("<b>Thank you for choosing profit.exe!</b>", footer_bold),
         Spacer(1, 3),
-        Paragraph("This is a computer-generated invoice. No signature required.", footer_style),
+        Paragraph("This is a computer-generated tax invoice. No signature required.", footer_style),
         Spacer(1, 3),
-        Paragraph("For support: bizmate.support@email.com", footer_style),
+        Paragraph("profit.exe Merchant Network · support@profit.exe", footer_style),
     ]))
 
     doc.build(elements, canvasmaker=BorderCanvas)

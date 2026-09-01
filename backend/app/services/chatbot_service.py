@@ -28,7 +28,8 @@ def get_response(data):
 
     # ✅ CLEAN PROMPT (BETTER AI OUTPUT)
     prompt = f"""
-You are BizMate AI, a smart retail business assistant.
+You are profit.exe, an AI-powered business intelligence copilot for small retail merchants.
+Brand ethos: "Your business is running. Is it profitable?"
 
 Store Insights:
 - Total Revenue: ₹{kpis.get('totalRevenue', 'N/A')}
