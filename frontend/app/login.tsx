@@ -1,168 +1,305 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import {
+  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  Dimensions, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, radius } from '../constants/theme';
+import { colors, radius, shadows, brand } from '../constants/theme';
+import ProfitExeLogo from '../components/ProfitExeLogo';
 
 const { width } = Dimensions.get('window');
 
 export default function Login() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('owner@srikrishna.profit.exe.in');
+  const [password, setPassword] = useState('••••••••••••');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogin = () => {
     if (!email || !password) {
-      setError('Please enter email and password');
+      setError('Please provide valid merchant credentials.');
       return;
     }
     setError('');
     setLoading(true);
-    // Mock auth — swap with real API call
     setTimeout(() => {
       setLoading(false);
       router.replace('/(tabs)');
-    }, 1000);
+    }, 600);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.bg1} />
-      <View style={styles.bg2} />
-      <View style={styles.bg3} />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.card}>
+          {/* Logo & Header */}
+          <View style={styles.logoWrap}>
+            <ProfitExeLogo variant="stacked" size="lg" showDescriptor />
+            <Text style={styles.tagline}>“{brand.tagline}”</Text>
+          </View>
 
-      <View style={styles.card}>
-        <View style={styles.logoWrap}>
-          <Text style={styles.logoIcon}>📊</Text>
+          {/* Active Workspace Pill */}
+          <View style={styles.workspacePill}>
+            <Text style={styles.workspaceLabel}>Store Workspace</Text>
+            <Text style={styles.workspaceName}>{brand.merchantName}</Text>
+            <Text style={styles.workspaceMeta}>{brand.merchantLocation} · GST: {brand.merchantGST}</Text>
+          </View>
+
+          {error ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          ) : null}
+
+          {/* Input Fields */}
+          <View style={styles.inputWrap}>
+            <Text style={styles.inputLabel}>Merchant ID / Email</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="owner@store.profit.exe.in"
+              placeholderTextColor="#94A3B8"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={styles.inputWrap}>
+            <View style={styles.passwordRow}>
+              <Text style={styles.inputLabel}>Security PIN / Password</Text>
+              <TouchableOpacity>
+                <Text style={styles.forgotLink}>Reset PIN</Text>
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="••••••••••••"
+              placeholderTextColor="#94A3B8"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
+
+          <TouchableOpacity
+            style={[styles.primaryBtn, loading && { opacity: 0.7 }]}
+            onPress={handleLogin}
+            disabled={loading}
+            activeOpacity={0.85}
+          >
+            {loading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text style={styles.primaryBtnText}>Launch Intelligence Console →</Text>
+            )}
+          </TouchableOpacity>
+
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>or continue with biometric SSO</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <View style={styles.ssoRow}>
+            {['Google Workspace', 'Aadhaar / DigiLocker'].map((prov, i) => (
+              <TouchableOpacity
+                key={i}
+                style={styles.ssoBtn}
+                onPress={handleLogin}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.ssoBtnText}>{prov}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <View style={styles.footerNote}>
+            <Text style={styles.demoHint}>
+              Sandbox Terminal: Any credentials will launch live merchant console
+            </Text>
+            <Text style={styles.footerMeta}>
+              profit.exe OS v{brand.version} · End-to-End Encrypted POS Tunnel
+            </Text>
+          </View>
         </View>
-        <Text style={styles.brand}>BIZMATE</Text>
-        <Text style={styles.sub}>Your Smart Business Partner</Text>
-
-        {error ? <View style={styles.errorBox}><Text style={styles.errorText}>{error}</Text></View> : null}
-
-        <View style={styles.inputWrap}>
-          <Text style={styles.inputLabel}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="you@business.com"
-            placeholderTextColor={colors.textSub}
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
-        </View>
-
-        <View style={styles.inputWrap}>
-          <Text style={styles.inputLabel}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="••••••••"
-            placeholderTextColor={colors.textSub}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-
-        <TouchableOpacity style={styles.forgotWrap}>
-          <Text style={styles.forgotText}>Forgot password?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.btn, loading && styles.btnDisabled]} onPress={handleLogin} disabled={loading}>
-          {loading
-            ? <ActivityIndicator color="#fff" />
-            : <Text style={styles.btnText}>Sign In →</Text>
-          }
-        </TouchableOpacity>
-
-        <View style={styles.divRow}>
-          <View style={styles.div} />
-          <Text style={styles.divText}>or continue with</Text>
-          <View style={styles.div} />
-        </View>
-
-        <View style={styles.socialRow}>
-          {[{ icon: 'G', label: 'Google' }, { icon: 'f', label: 'Facebook' }, { icon: '🍎', label: 'Apple' }].map((s, i) => (
-            <TouchableOpacity key={i} style={styles.socialBtn} onPress={handleLogin}>
-              <Text style={styles.socialText}>{s.icon}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <Text style={styles.hint}>Demo: any email + any password</Text>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, backgroundColor: '#0D1B2A',
-    alignItems: 'center', justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#F8FAFC',
   },
-  bg1: { position: 'absolute', width: 350, height: 350, borderRadius: 175, backgroundColor: colors.primary + '18', top: -80, left: -80 },
-  bg2: { position: 'absolute', width: 250, height: 250, borderRadius: 125, backgroundColor: '#7B61FF18', bottom: 80, right: -60 },
-  bg3: { position: 'absolute', width: 150, height: 150, borderRadius: 75, backgroundColor: colors.accent + '12', top: 100, right: 30 },
-  card: {
-    width: width * 0.55,
-    maxWidth: 480,
-    backgroundColor: colors.card,
-    borderRadius: 28, padding: 28,
+  scrollContent: {
+    minHeight: '100%',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.35,
-    shadowRadius: 40,
-    elevation: 20,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  card: {
+    width: '100%',
+    maxWidth: 460,
+    backgroundColor: '#FFFFFF',
+    borderRadius: radius.lg,
+    padding: 32,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    ...shadows.elevated,
   },
   logoWrap: {
-    width: 72, height: 72, borderRadius: 36,
-    backgroundColor: colors.dark,
-    alignItems: 'center', justifyContent: 'center',
-    marginBottom: 14,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  logoIcon: { fontSize: 32 },
-  brand: { fontSize: 28, fontWeight: '900', color: colors.text, letterSpacing: 4, marginBottom: 4 },
-  sub: { fontSize: 13, color: colors.textSub, marginBottom: 24 },
-  errorBox: { width: '100%', backgroundColor: colors.danger + '18', borderRadius: 10, padding: 10, marginBottom: 12, borderWidth: 1, borderColor: colors.danger + '40' },
-  errorText: { color: colors.danger, fontSize: 12, textAlign: 'center' },
-  inputWrap: { width: '100%', marginBottom: 12 },
-  inputLabel: { fontSize: 11, fontWeight: '700', color: colors.textSub, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 },
-  input: {
-    borderWidth: 1.5, borderColor: colors.border, borderRadius: radius.sm,
-    padding: 14, fontSize: 14, color: colors.text, backgroundColor: colors.bg,
-  },
-  forgotWrap: { alignSelf: 'flex-end', marginBottom: 20 },
-  forgotText: { fontSize: 12, color: colors.primary, fontWeight: '600' },
-  btn: {
-    width: '100%', backgroundColor: colors.dark,
-    borderRadius: radius.sm, padding: 16,
     alignItems: 'center',
-    shadowColor: colors.dark,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 6,
+    marginBottom: 20,
   },
-  btnDisabled: { opacity: 0.7 },
-  btnText: { color: '#fff', fontSize: 15, fontWeight: '800', letterSpacing: 0.5 },
-  divRow: { flexDirection: 'row', alignItems: 'center', width: '100%', marginVertical: 18, gap: 10 },
-  div: { flex: 1, height: 1, backgroundColor: colors.border },
-  divText: { fontSize: 12, color: colors.textSub },
-  socialRow: { flexDirection: 'row', gap: 14, marginBottom: 4 },
-  socialBtn: {
-    width: 54, height: 54, borderRadius: 14,
-    borderWidth: 1.5, borderColor: colors.border,
-    alignItems: 'center', justifyContent: 'center',
-    backgroundColor: colors.bg,
+  tagline: {
+    fontSize: 12.5,
+    fontStyle: 'italic',
+    color: '#64748B',
+    marginTop: 8,
+    textAlign: 'center',
   },
-  socialText: { fontSize: 18, fontWeight: '700', color: colors.text },
-  hint: { marginTop: 18, fontSize: 11, color: colors.textSub + '99' },
+  workspacePill: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    marginBottom: 20,
+  },
+  workspaceLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#64748B',
+    marginBottom: 2,
+  },
+  workspaceName: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#0F172A',
+  },
+  workspaceMeta: {
+    fontSize: 10.5,
+    color: '#64748B',
+    marginTop: 2,
+  },
+  errorBox: {
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 14,
+  },
+  errorText: {
+    color: '#B91C1C',
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  inputWrap: {
+    marginBottom: 16,
+  },
+  passwordRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  inputLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#334155',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 6,
+  },
+  forgotLink: {
+    fontSize: 11,
+    color: '#2563EB',
+    fontWeight: '600',
+  },
+  input: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 13.5,
+    color: '#0F172A',
+  },
+  primaryBtn: {
+    backgroundColor: '#0F172A',
+    borderRadius: 6,
+    paddingVertical: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8,
+    ...shadows.sm,
+  },
+  primaryBtnText: {
+    color: '#FFFFFF',
+    fontSize: 13.5,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+    gap: 10,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E2E8F0',
+  },
+  dividerText: {
+    fontSize: 11,
+    color: '#94A3B8',
+    fontWeight: '500',
+  },
+  ssoRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  ssoBtn: {
+    flex: 1,
+    height: 38,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  ssoBtnText: {
+    fontSize: 11.5,
+    fontWeight: '600',
+    color: '#475569',
+  },
+  footerNote: {
+    marginTop: 24,
+    alignItems: 'center',
+    gap: 4,
+  },
+  demoHint: {
+    fontSize: 10.5,
+    color: '#64748B',
+    textAlign: 'center',
+  },
+  footerMeta: {
+    fontSize: 9.5,
+    color: '#94A3B8',
+    marginTop: 4,
+  },
 });

@@ -1,29 +1,29 @@
 {
   "expo": {
-    "name": "BizMate",
-    "slug": "bizmate",
+    "name": "profit.exe - AI-Powered Business Intelligence for Small Merchants",
+    "slug": "profit-exe",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#1A2332"
+      "backgroundColor": "#F8FAFC"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bizmate.app"
+      "bundleIdentifier": "com.profitexe.app"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#1A2332"
+        "backgroundColor": "#F8FAFC"
       },
-      "package": "com.bizmate.app"
+      "package": "com.profitexe.app"
     },
     "web": {
       "bundler": "metro"
     },
-    "scheme": "bizmate",
+    "scheme": "profit-exe",
     "plugins": ["expo-router"]
   }
 }
