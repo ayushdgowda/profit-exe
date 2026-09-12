@@ -66,7 +66,7 @@ export const mockMonthlySales = [
 ];
 
 export const mockChatHistory = [
-  { id: 'c1', role: 'assistant', text: "Hi! I'm BizMate AI. Ask me anything about your inventory, sales, or analytics!" },
+  { id: 'c1', role: 'assistant', text: "Welcome to profit.exe. I'm your AI-powered business intelligence copilot. Ask me anything about your store sales, inventory, or margins!" },
 ];
 
 export const categories = ['All', 'Grains', 'Hygiene', 'Snacks', 'Beverages', 'Dairy', 'Oils', 'Condiments'];

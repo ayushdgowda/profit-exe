@@ -148,7 +148,7 @@ export const sendChatMessage = async (message: string): Promise<string> => {
     return data.reply || "No response from AI"; // ✅ fixed: returns string not raw json
   } catch (error) {
     console.log("Chat error:", error);
-    return "Sorry, I couldn't connect to BizMate AI right now.";
+    return "Sorry, I couldn't connect to profit.exe Assistant right now. Please ensure the server is running.";
   }
 };
 
