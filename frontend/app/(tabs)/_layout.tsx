@@ -1,153 +1,137 @@
+import React, { useState, useEffect } from 'react';
 import { Tabs } from 'expo-router';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-
-interface TabIconProps {
-  icon: string;
-  focused: boolean;
-  label: string;
-}
-
-function TabIcon({ icon, focused, label }: TabIconProps) {
-  const iconStyle: ViewStyle = focused
-    ? { ...styles.iconWrap, ...styles.iconWrapActive }
-    : styles.iconWrap;
-
-  return (
-    <View style={styles.tabItem}>
-      <View style={iconStyle}>
-        <Text style={styles.iconText}>{icon}</Text>
-      </View>
-      <Text style={focused ? styles.tabLabelActive : styles.tabLabel}>{label}</Text>
-    </View>
-  );
-}
-
-function HeaderTitle({ title }: { title: string }) {
-  return (
-    <View style={styles.headerTitleRow}>
-      <Text style={styles.headerEmoji}>💼</Text>
-      <Text style={styles.headerText}>{title}</Text>
-    </View>
-  );
-}
+import { View, StyleSheet, Dimensions, Platform } from 'react-native';
+import Sidebar from '../../components/Sidebar';
+import { colors } from '../../constants/theme';
+import {
+  IconOverview,
+  IconOpportunities,
+  IconSales,
+  IconInventory,
+  IconBilling,
+  IconCustomers,
+  IconAnalytics,
+  IconAssistant,
+} from '../../components/Icons';
 
 export default function TabLayout() {
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+
+  useEffect(() => {
+    const sub = Dimensions.addEventListener('change', ({ window }) => {
+      setDimensions(window);
+    });
+    return () => sub?.remove();
+  }, []);
+
+  const isDesktop = dimensions.width >= 768;
+
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: true,
-        headerStyle: { backgroundColor: '#0D1B2A' },
-        headerShadowVisible: false,
-        headerTitleAlign: 'center',
-        headerTintColor: '#fff',
-        tabBarStyle: styles.tabBar,
-        tabBarShowLabel: false,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          headerTitle: () => <HeaderTitle title="BIZMATE" />,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="⊞" focused={focused} label="DASHBOARD" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="billing"
-        options={{
-          headerTitle: () => <HeaderTitle title="SALES" />,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="🛒" focused={focused} label="Billing" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="inventory"
-        options={{
-          headerTitle: () => <HeaderTitle title="INVENTORY" />,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="📦" focused={focused} label="INVENTORY" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="analytics"
-        options={{
-          headerTitle: () => <HeaderTitle title="ANALYTICS" />,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="📉" focused={focused} label="ANALYTICS" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chatbot"
-        options={{
-          headerTitle: () => <HeaderTitle title="AI ASSISTANT" />,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="🤖" focused={focused} label="CHATBOT" />
-          ),
-        }}
-      />
-    </Tabs>
+    <View style={styles.shell}>
+      {/* Desktop Sidebar */}
+      {isDesktop && <Sidebar />}
+
+      {/* Main Outlet */}
+      <View style={styles.mainContainer}>
+        <Tabs
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: isDesktop ? { display: 'none' } : styles.mobileTabBar,
+            tabBarActiveTintColor: colors.dark,
+            tabBarInactiveTintColor: colors.textMuted,
+            tabBarLabelStyle: { fontSize: 10, fontWeight: '600', marginTop: 2 },
+          }}
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: 'Overview',
+              tabBarLabel: 'Overview',
+              tabBarIcon: ({ color }) => <IconOverview size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="opportunities"
+            options={{
+              title: 'Opportunities',
+              tabBarLabel: 'Opportunities',
+              tabBarIcon: ({ color }) => <IconOpportunities size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="sales"
+            options={{
+              title: 'Sales',
+              tabBarLabel: 'Sales',
+              tabBarIcon: ({ color }) => <IconSales size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="inventory"
+            options={{
+              title: 'Inventory',
+              tabBarLabel: 'Inventory',
+              tabBarIcon: ({ color }) => <IconInventory size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="billing"
+            options={{
+              title: 'Billing',
+              tabBarLabel: 'Billing',
+              tabBarIcon: ({ color }) => <IconBilling size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="customers"
+            options={{
+              title: 'Customers',
+              tabBarLabel: 'Customers',
+              tabBarIcon: ({ color }) => <IconCustomers size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="analytics"
+            options={{
+              title: 'Analytics',
+              tabBarLabel: 'Analytics',
+              tabBarIcon: ({ color }) => <IconAnalytics size={17} color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="chatbot"
+            options={{
+              title: 'AI Assistant',
+              tabBarLabel: 'Assistant',
+              tabBarIcon: ({ color }) => <IconAssistant size={17} color={color} />,
+            }}
+          />
+        </Tabs>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: '#0D1B2A',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.06)',
-    height: 72,
-    paddingBottom: 10,
-    paddingTop: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 20,
-  },
-  headerTitleRow: {
+  shell: {
+    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    backgroundColor: '#F8FAFC',
+    height: '100%',
+    width: '100%',
   },
-  headerEmoji: { fontSize: 20 },
-  headerText: {
-    fontSize: 17,
-    fontWeight: '900',
-    color: '#fff',
-    letterSpacing: 3,
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#F8FAFC',
+    height: '100%',
+    overflow: 'hidden',
   },
-  tabItem: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 3,
-  },
-  iconWrap: {
-    width: 40,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-  },
-  iconWrapActive: {
-    backgroundColor: 'rgba(79,142,247,0.2)',
-  },
-  iconText: {
-    fontSize: 20,
-    color: 'rgba(255,255,255,0.55)',
-  },
-  tabLabel: {
-    fontSize: 9,
-    color: 'rgba(255,255,255,0.3)',
-    fontWeight: '700',
-    letterSpacing: 0.3,
-  },
-  tabLabelActive: {
-    fontSize: 9,
-    color: '#4F8EF7',
-    fontWeight: '700',
-    letterSpacing: 0.3,
+  mobileTabBar: {
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
+    height: 60,
+    paddingBottom: 6,
+    paddingTop: 6,
   },
 });
