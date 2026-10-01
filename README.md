@@ -1,6 +1,8 @@
-# BIZmate — Smart Business Assistant
+# MerchantIQ — AI Growth Intelligence for Small Merchants
 
-> An AI-powered retail management system for small businesses — combining inventory, billing, analytics, and intelligent forecasting in one platform.
+> "Know what happened. Know what to do next."
+
+A production-grade fintech SaaS platform for small Indian kirana merchants — combining the AI Opportunity Engine, point-of-sale billing, inventory intelligence, and predictive sales forecasting.
 
 ---
 
@@ -22,7 +24,7 @@
 
 ## Overview
 
-Small kirana stores manage inventory, billing, and sales manually — without any visibility into their own business data. BIZmate solves this by bringing everything into one smart platform that any store owner can use.
+Small kirana stores manage inventory, billing, and sales manually — without any visibility into their own business data. MerchantIQ solves this by bringing everything into one smart growth intelligence platform that any merchant can use.
 
 Built with a React Native frontend, Flask REST API backend, PostgreSQL database, and an integrated AI/ML layer for sales forecasting and business insights.
 
@@ -300,4 +302,4 @@ Built with ❤️ by:
 
 ---
 
-*BIZmate — making smart retail accessible to every store owner.*
+*MerchantIQ — AI Growth Intelligence for Small Merchants. Know what happened. Know what to do next.*

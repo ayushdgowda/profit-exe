@@ -1,7 +1,8 @@
-# 🏪 BizMate — Smart Business Management App
+# ⚡ profit.exe — AI-Powered Business Intelligence for Small Merchants
 
-A fully interactive React Native (Expo) frontend for BizMate, built in TypeScript.  
-Designed to connect to your FastAPI backend.
+> *"Your business is running. Is it profitable?"*
+
+A production-grade, venture-quality fintech SaaS platform built for small retail merchants. Powered by the **AI Opportunity Engine**, profit.exe surfaces real-time revenue opportunities, inventory stockout risks, profit leaks, and cross-sell combos with measurable financial impact.
 
 ---
 
@@ -15,106 +16,33 @@ npm install
 npx expo start
 ```
 
-Then press:
-- **`i`** → iOS Simulator
+Press:
+- **`w`** → Web Browser (Desktop SaaS Experience with Sidebar)
 - **`a`** → Android Emulator
-- **`w`** → Web Browser
-- **Scan QR** → Expo Go on your phone
+- **`i`** → iOS Simulator
+- **Scan QR** → Expo Go
 
 ---
 
-## 📱 Screens
+## 🏛️ System Architecture & Product Modules
 
-| Screen | File | Description |
-|--------|------|-------------|
-| **Login** | `app/login.tsx` | Email/password + social login. Navigates to tabs on success. |
-| **Dashboard** | `app/(tabs)/index.tsx` | KPI cards, animated weekly sales chart, recent transactions |
-| **Billing** | `app/(tabs)/billing.tsx` | Product autocomplete, live bill builder, customer details, Cash/Card/UPI |
-| **Inventory** | `app/(tabs)/inventory.tsx` | Full CRUD table, low-stock alerts, expiry tracking, category filter |
-| **Analytics** | `app/(tabs)/analytics.tsx` | Revenue trend, bar chart, donut pie, AI forecast, expiry risk table |
-| **AI Chat** | `app/(tabs)/chatbot.tsx` | Conversational AI with quick prompts and typing indicator |
-| **Modal** | `app/modal.tsx` | Reusable bottom-sheet modal |
-
----
-
-## 🗂️ Project Structure
-
-```
-bizmate/
-├── app/
-│   ├── _layout.tsx           ← Root stack navigator
-│   ├── index.tsx             ← Redirect to /login
-│   ├── login.tsx             ← Login screen
-│   ├── modal.tsx             ← Reusable modal
-│   └── (tabs)/
-│       ├── _layout.tsx       ← Tab bar navigator
-│       ├── index.tsx         ← Dashboard
-│       ├── billing.tsx       ← Billing
-│       ├── inventory.tsx     ← Inventory
-│       ├── analytics.tsx     ← Analytics
-│       └── chatbot.tsx       ← AI Chatbot
-│
-├── components/
-│   ├── LineChart.tsx         ← Custom SVG line/area chart
-│   ├── BarChart.tsx          ← Custom SVG bar chart
-│   └── PieChart.tsx          ← Custom SVG donut chart
-│
-├── constants/
-│   └── theme.ts              ← Colors, spacing, border radius
-│
-├── mock/
-│   └── data.ts               ← All mock data (swap with API calls)
-│
-├── app.json
-├── package.json
-├── babel.config.js
-└── tsconfig.json
-```
+| Module | Route | Purpose & Enterprise Capabilities |
+|---|---|---|
+| **Overview** | `app/(tabs)/index.tsx` | Executive summary, 4 compact financial KPIs, restrained sales velocity chart, and top priority opportunities. |
+| **AI Opportunity Engine** | `app/(tabs)/opportunities.tsx` | Central intelligence cockpit surfacing actionable decisions (Stockout Risk, Profit Leak, Cross-Sell Upside, Dead Stock) with ₹ impact metrics and interactive evidence drawers. |
+| **Sales Ledger** | `app/(tabs)/sales.tsx` | Live POS transaction streams, tender breakdown (UPI, Cash, Card), and automated PDF tax invoice downloads. |
+| **Inventory Intelligence** | `app/(tabs)/inventory.tsx` | Table-first inventory health, stock runway calculations, 7D demand velocity, and full CRUD catalog integration. |
+| **Billing & POS** | `app/(tabs)/billing.tsx` | High-velocity point-of-sale checkout terminal with instant product search, quantity steppers, discount/tax calculations, and thermal/PDF printing. |
+| **Customer Directory** | `app/(tabs)/customers.tsx` | CRM telemetry tracking repeat customer visit frequency, lifetime spend, average basket size, and tender preference. |
+| **Growth Analytics** | `app/(tabs)/analytics.tsx` | Audited financial analytics across 7D/30D/90D windows, gross profit margins, category contribution, and machine learning sales forecasts. |
+| **profit.exe Assistant** | `app/(tabs)/chatbot.tsx` | Conversational retail copilot presenting structured business intelligence reports (Recommendation, Evidence, Expected ₹ Impact, and 1-Click Action triggers). |
 
 ---
 
-## 🔌 Connecting to Your FastAPI Backend
+## 🎨 Design Philosophy & Visual Language
 
-All mock data lives in `mock/data.ts`. Replace with real API calls:
-
-```typescript
-// Example: fetch inventory
-const BASE_URL = 'http://YOUR_IP:8000';
-
-const res = await fetch(`${BASE_URL}/api/inventory/products`);
-const products = await res.json();
-```
-
-### Backend endpoint mapping:
-
-| Screen | Backend Route |
-|--------|--------------|
-| Dashboard stats | `GET /api/analytics/summary` |
-| Weekly sales chart | `GET /api/analytics/sales?period=week` |
-| Recent transactions | `GET /api/billing/transactions?limit=5` |
-| Billing — add item | `GET /api/inventory/products?search=X` |
-| Billing — submit bill | `POST /api/billing/bill` |
-| Inventory list | `GET /api/inventory/products` |
-| Inventory CRUD | `POST/PUT/DELETE /api/inventory/products/:id` |
-| Analytics charts | `GET /api/analytics/sales?period=month` |
-| AI Forecast | `GET /api/analytics/forecast` |
-| Chatbot | `POST /api/chatbot/query` |
-
----
-
-## 🎨 Tech Stack
-
-- **React Native** + **Expo** ~52
-- **expo-router** v4 (file-based routing)
-- **TypeScript** strict mode
-- **react-native-svg** — all charts built from scratch (no heavy libraries)
-- Zero external UI libraries — all components hand-crafted
-
----
-
-## 📝 Notes
-
-- Charts are fully custom SVG — lightweight and fast
-- All screens are production-ready; just swap mock data for API calls
-- The chatbot uses keyword matching locally — wire up `POST /api/chatbot/query` for real AI
-- Low-stock and expiry logic is computed client-side from inventory data
+- **Reference Standards**: Linear + Stripe + Ramp + Vercel.
+- **Calm, Restrained Palette**: Crisp neutral canvas (`#F8FAFC`), pure white cards (`#FFFFFF`), dark contrast typography (`#0F172A`), precision royal blue (`#2563EB`).
+- **Semantic Colors Only**: Emerald for Opportunity (`#10B981`), Amber for Attention (`#F59E0B`), Coral for Risk (`#EF4444`), Blue for Informational (`#3B82F6`).
+- **Zero AI Clichés**: No glowing neon borders, no glassmorphism, no robot emojis, no floating gradient blobs.
+- **Desktop Sidebar**: Compact, elegant sidebar with merchant switcher ("Sri Krishna Kirana & General Store") and live sync telemetry.
